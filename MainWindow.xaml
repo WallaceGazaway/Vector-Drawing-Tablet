@@ -1,0 +1,114 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Drawing"
+        
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="Drawing.MainWindow"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        
+        mc:Ignorable="d"
+        Title="MainWindow" Height="900" Width="1600">
+    <Grid>
+        <!-- Canvas on which the user may draw. Made usable using NuGet Package Manager.
+        Chosen based on research and claims advising others seeking to do something similar.
+        Has functionality that allows it to recognize mouse-down events to draw vector lines that follow user movement.
+        Other features it has, which I did not use, include highlighter options and a select drag method to move your creations around canvas.
+        Ink Canvas also allows for stylus sensitivity recognition as well, in event you're using a digital pen to draw. -->
+        <InkCanvas x:Name="drawRegion" Margin="272,164,0,96"/>
+
+        <!-- Stack Panels simply used as makeshift border to surround canvas -->
+        <StackPanel x:Name="brushSettings" Margin="0,0,0,720" >
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF5B5A6B" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+        </StackPanel>
+        <StackPanel x:Name="lowBraceMargin" Margin="0,788,0,0">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FF5B5A6B" Offset="0"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+        </StackPanel>
+        <StackPanel x:Name="colorSwatch" Margin="0,140,1333,72">
+            <StackPanel.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF1C1B1D" Offset="0"/>
+                    <GradientStop Color="#FF5B5A6B" Offset="1"/>
+                </RadialGradientBrush>
+            </StackPanel.Background>
+        </StackPanel>
+
+
+        <!-- Manually made color selecter using image mousedown feature. Pen color adjusts to selection. -->
+        <Image x:Name="redBrush" Margin="26,366,1520,462" Source="/red.jpg" MouseDown="color_Choice" />
+        <Image x:Name="orangeBrush" Margin="107,366,1439,462" Source="/orange.jpg" MouseDown="color_Choice" />
+        <Image x:Name="yellowBrush" Margin="188,366,1358,462" Source="/yellow.jpg" MouseDown="color_Choice" />
+        <Image x:Name="greenBrush" Margin="26,475,1520,353" Source="/green.jpg" MouseDown="color_Choice" />
+        <Image x:Name="blueBrush" Margin="107,475,1439,353" Source="/blue.jpg" MouseDown="color_Choice" />
+        <Image x:Name="purpleBrush" Margin="188,475,1358,353" Source="/purple.jpg" MouseDown="color_Choice" />
+        <Image x:Name="pinkBrush" Margin="107,570,1439,258" Source="/pink.jpg" MouseDown="color_Choice" />
+        <Image x:Name="blackBrush" Margin="26,663,1520,165" Source="/black.jpg" MouseDown="color_Choice" />
+        <Image x:Name="whiteBrush" Margin="188,663,1358,165" Source="/white.jpg" MouseDown="color_Choice" />
+        <Image x:Name="grayBrush" Margin="107,663,1439,165" Source="/grey.jpg" MouseDown="color_Choice" />
+
+        <!-- Slider value will effect the brush size of mouese event drawing -->
+        <Slider x:Name="brushSize" HorizontalAlignment="Left" Margin="26,81,0,0" VerticalAlignment="Top" Width="216" 
+                Minimum="1" Maximum="100" Value="20" Height="20" FontSize="18" ValueChanged="brushSize_Select"/>
+        <TextBlock HorizontalAlignment="Left" Margin="82,27,0,0" TextWrapping="Wrap" Text="Brush Size" VerticalAlignment="Top" 
+                   FontFamily="Bahnschrift Condensed" FontWeight="Bold" FontSize="30" Foreground="White"/>
+
+        <!-- Icons for selecting the brush behavior. Will be using onClick alternative introduced in Memory Match -->
+        <Image x:Name="paintBrush" HorizontalAlignment="Left" Height="100" Margin="358,27,0,0" VerticalAlignment="Top" 
+               Width="100" Source="/Draw.png" MouseDown="brush_Choice"/>
+        <Image x:Name="eraser" HorizontalAlignment="Left" Height="100" Margin="484,27,0,0" VerticalAlignment="Top" 
+               Width="100" Source="/eraser.png" MouseDown="brush_Choice"/>
+
+        <!-- Icon has no functionality, just adds more character to color picker-->
+        <Image HorizontalAlignment="Left" Height="145" Margin="53,169,0,0" VerticalAlignment="Top" Width="162" Source="/Color.png"/>
+
+
+        <!-- Buttons for saving drawing and loading it back up -->
+        <Button x:Name="save" Content="Save" HorizontalAlignment="Left" Margin="690,45,0,0" VerticalAlignment="Top" Height="56" Width="144" FontSize="48" 
+                FontFamily="Bahnschrift Condensed" BorderBrush="#FF020000" Foreground="White" Click="buttonPress">
+            <Button.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF413F56" Offset="1"/>
+                    <GradientStop Color="#FFC80000" Offset="0"/>
+                    <GradientStop Color="#FF72151C" Offset="0.647"/>
+                </RadialGradientBrush>
+            </Button.Background>
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Button x:Name="load" Content="Load" HorizontalAlignment="Left" Margin="883,45,0,0" VerticalAlignment="Top" Height="56" Width="145" FontSize="48" 
+        FontFamily="Bahnschrift Condensed" BorderBrush="#FF020000" Foreground="White" Click="buttonPress">
+            <Button.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF413F56" Offset="1"/>
+                    <GradientStop Color="#FFC80000" Offset="0"/>
+                    <GradientStop Color="#FF72151C" Offset="0.647"/>
+                </RadialGradientBrush>
+            </Button.Background>
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Label Content="Vector Drawing Program" HorizontalAlignment="Left" Margin="1169,10,0,0" VerticalAlignment="Top" Height="53" Width="415" Foreground="White" FontSize="36" FontFamily="Bauhaus 93"/>
+        <Label Content="CGT 456" HorizontalAlignment="Left" Margin="1495,63,0,0" VerticalAlignment="Top" Height="45" Width="95" Foreground="White" FontSize="24" FontFamily="Bahnschrift Condensed"/>
+        <Label Content="Created by: Wallace Gazaway" HorizontalAlignment="Left" Margin="1329,90,0,0" VerticalAlignment="Top" Height="45" Width="255" Foreground="White" FontSize="24" FontFamily="Bahnschrift Condensed"/>
+
+    </Grid>
+</Window>
